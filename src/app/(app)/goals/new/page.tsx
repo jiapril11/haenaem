@@ -63,7 +63,7 @@ export default function NewGoalPage() {
   const isValid = title.trim() && category && endDate;
 
   return (
-    <div className="min-h-screen bg-[#F8F8F9]">
+    <div className="min-h-screen bg-[#F8F8F9] overflow-x-hidden">
       {/* 헤더 */}
       <div className="flex items-center gap-3 px-4 pt-6 pb-4">
         <button
@@ -154,8 +154,8 @@ export default function NewGoalPage() {
           <label className="text-sm font-semibold text-[#2C2C2A] block mb-2">
             기간
           </label>
-          <div className="flex gap-3">
-            <div className="flex-1">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
               <p className="text-xs text-[#878680] mb-1">시작일</p>
               <input
                 type="date"
@@ -164,7 +164,7 @@ export default function NewGoalPage() {
                 className="w-full bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5 text-sm text-[#2C2C2A] outline-none focus:border-[#6CBFA8]"
               />
             </div>
-            <div className="flex-1">
+            <div>
               <p className="text-xs text-[#878680] mb-1">종료일</p>
               <input
                 type="date"

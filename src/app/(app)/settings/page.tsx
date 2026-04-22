@@ -44,20 +44,17 @@ export default async function SettingsPage() {
 
       {/* 메뉴 목록 */}
       <div className="bg-white rounded-2xl border border-[#E8E8E6] overflow-hidden mb-4">
-        {[
-          { label: "버전", value: "1.0.0" },
-          { label: "문의하기", value: "→" },
-        ].map((item, i, arr) => (
-          <div
-            key={item.label}
-            className={`flex items-center justify-between px-4 py-3.5 ${
-              i < arr.length - 1 ? "border-b border-[#F0F0EE]" : ""
-            }`}
-          >
-            <span className="text-sm text-[#2C2C2A]">{item.label}</span>
-            <span className="text-sm text-[#878680]">{item.value}</span>
-          </div>
-        ))}
+        <div className="flex items-center justify-between px-4 py-3.5 border-b border-[#F0F0EE]">
+          <span className="text-sm text-[#2C2C2A]">버전</span>
+          <span className="text-sm text-[#878680]">1.0.0</span>
+        </div>
+        <a
+          href="mailto:tadadadacoding@gmail.com?subject=해냄! 문의"
+          className="flex items-center justify-between px-4 py-3.5"
+        >
+          <span className="text-sm text-[#2C2C2A]">문의하기</span>
+          <span className="text-sm text-[#878680]">→</span>
+        </a>
       </div>
 
       {/* 로그아웃 */}
