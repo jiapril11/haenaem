@@ -11,4 +11,6 @@ const withPWA = withPWAInit({
   },
 });
 
-export default withPWA({});
+export default withPWA({
+  turbopack: {},
+});

@@ -36,7 +36,7 @@ export default function TodayToggleButton({ goalId, isDoneToday, color, todayNot
           onChange={(e) => setNote(e.target.value)}
           placeholder="오늘 무엇을 했나요? (선택)"
           rows={1}
-          className="w-full text-sm text-[#2C2C2A] placeholder:text-[#C0BFB8] bg-[#F8F8F9] border border-[#E8E8E6] rounded-xl px-3 py-2.5 resize-none outline-none focus:border-[#6CBFA8] transition-colors"
+          className="block w-full text-sm text-[#2C2C2A] placeholder:text-[#C0BFB8] bg-[#F8F8F9] border border-[#E8E8E6] rounded-xl px-3 py-2.5 resize-none outline-none focus:border-[#6CBFA8] transition-colors"
         />
       ) : isEditing ? (
         <div className="flex flex-col gap-1.5">
@@ -45,7 +45,7 @@ export default function TodayToggleButton({ goalId, isDoneToday, color, todayNot
             onChange={(e) => setEditNote(e.target.value)}
             rows={1}
             autoFocus
-            className="w-full text-sm text-[#2C2C2A] bg-[#F8F8F9] border border-[#6CBFA8] rounded-xl px-3 py-2.5 resize-none outline-none transition-colors"
+            className="block w-full text-sm text-[#2C2C2A] bg-[#F8F8F9] border border-[#6CBFA8] rounded-xl px-3 py-2.5 resize-none outline-none transition-colors"
           />
           <div className="flex gap-2">
             <button
@@ -71,7 +71,7 @@ export default function TodayToggleButton({ goalId, isDoneToday, color, todayNot
             rows={1}
             disabled
             placeholder="오늘 무엇을 했나요? (선택)"
-            className="w-full text-sm text-[#AEADA8] placeholder:text-[#C0BFB8] bg-[#F0F0EE] border border-[#E8E8E6] rounded-xl px-3 py-2.5 resize-none outline-none cursor-not-allowed"
+            className="block w-full text-sm text-[#AEADA8] placeholder:text-[#C0BFB8] bg-[#F0F0EE] border border-[#E8E8E6] rounded-xl px-3 py-2.5 resize-none outline-none cursor-not-allowed"
           />
           <button
             onClick={() => setIsEditing(true)}

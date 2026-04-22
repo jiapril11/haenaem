@@ -154,24 +154,24 @@ export default function NewGoalPage() {
           <label className="text-sm font-semibold text-[#2C2C2A] block mb-2">
             기간
           </label>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="text-xs text-[#878680] mb-1">시작일</p>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5">
+              <p className="text-xs text-[#878680] w-8 flex-shrink-0">시작일</p>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5 text-sm text-[#2C2C2A] outline-none focus:border-[#6CBFA8]"
+                className="flex-1 min-w-0 text-sm text-[#2C2C2A] outline-none bg-transparent"
               />
             </div>
-            <div>
-              <p className="text-xs text-[#878680] mb-1">종료일</p>
+            <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5">
+              <p className="text-xs text-[#878680] w-8 flex-shrink-0">종료일</p>
               <input
                 type="date"
                 value={endDate}
                 min={startDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5 text-sm text-[#2C2C2A] outline-none focus:border-[#6CBFA8]"
+                className="flex-1 min-w-0 text-sm text-[#2C2C2A] outline-none bg-transparent"
               />
             </div>
           </div>
