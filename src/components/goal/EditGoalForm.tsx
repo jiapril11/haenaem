@@ -100,7 +100,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
             기간
           </label>
           <div className="flex gap-3">
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-[#878680] mb-1">시작일</p>
               <input
                 type="date"
@@ -109,7 +109,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
                 className="w-full bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5 text-sm text-[#2C2C2A] outline-none focus:border-[#6CBFA8]"
               />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-[#878680] mb-1">종료일</p>
               <input
                 type="date"
