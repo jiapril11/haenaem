@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { format, differenceInDays, parseISO } from "date-fns";
+import { getTodayKST, getYesterdayKST } from "@/lib/utils/date";
 import Link from "next/link";
 import CommunityCard from "@/components/community/CommunityCard";
 import type { CommentData } from "@/components/community/CommunityCard";
@@ -8,8 +9,8 @@ import type { CommentData } from "@/components/community/CommunityCard";
 function calcCurrentStreak(dates: string[]): number {
   if (dates.length === 0) return 0;
   const sorted = [...new Set(dates)].sort();
-  const today = format(new Date(), "yyyy-MM-dd");
-  const yesterday = format(new Date(Date.now() - 86400000), "yyyy-MM-dd");
+  const today = getTodayKST();
+  const yesterday = getYesterdayKST();
   let cursor = sorted.includes(today) ? today : yesterday;
   if (!sorted.includes(cursor)) return 0;
   let streak = 0;
@@ -29,7 +30,7 @@ export default async function CommunityPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = getTodayKST();
 
   const [
     { data: publicGoals },

@@ -3,14 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { format } from "date-fns";
+import { getTodayKST } from "@/lib/utils/date";
 
 export async function toggleRecord(goalId: string, alreadyDone: boolean, note?: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = getTodayKST();
 
   if (alreadyDone) {
     await supabase
@@ -37,7 +37,7 @@ export async function updateNote(goalId: string, note: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = getTodayKST();
 
   await supabase
     .from("records")

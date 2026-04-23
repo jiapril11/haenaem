@@ -6,9 +6,10 @@ import { createClient } from "@/lib/supabase/server";
 import GoalCard from "@/components/goal/GoalCard";
 import OnboardingView from "@/components/layout/OnboardingView";
 import type { Goal } from "@/types";
+import { getTodayKST, getNowKST, formatKST } from "@/lib/utils/date";
 
 function calcStreak(dates: string[]): number {
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = getTodayKST();
   const sorted = [...dates].sort().reverse();
   let streak = 0;
   let cursor = today;
@@ -17,7 +18,7 @@ function calcStreak(dates: string[]): number {
       streak++;
       const prev = new Date(cursor);
       prev.setDate(prev.getDate() - 1);
-      cursor = format(prev, "yyyy-MM-dd");
+      cursor = format(prev, "yyyy-MM-dd"); // 날짜 계산용 (날짜 문자열 기준이라 timezone 무관)
     } else {
       break;
     }
@@ -43,9 +44,9 @@ export default async function HomePage() {
   ]);
 
   const activeGoals: Goal[] = goals ?? [];
-  const today = format(new Date(), "yyyy-MM-dd");
-  const todayFmt = format(new Date(), "M월 d일 (EEE)", { locale: ko });
-  const hour = new Date().getHours();
+  const today = getTodayKST();
+  const todayFmt = formatKST("M월 d일 (EEE)", { locale: ko });
+  const hour = getNowKST().getHours();
 
   const displayName =
     profile?.nickname ??

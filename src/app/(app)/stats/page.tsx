@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { format, differenceInDays, parseISO, getDaysInMonth, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, getDay } from "date-fns";
+import { getTodayKST, getYesterdayKST, getNowKST } from "@/lib/utils/date";
 import { ko } from "date-fns/locale";
 import ProgressBar from "@/components/goal/ProgressBar";
 import CategoryIcon from "@/components/goal/CategoryIcon";
@@ -8,8 +9,8 @@ import CategoryIcon from "@/components/goal/CategoryIcon";
 function calcStreak(dates: string[]): { current: number; longest: number } {
   if (dates.length === 0) return { current: 0, longest: 0 };
   const sorted = [...new Set(dates)].sort();
-  const today = format(new Date(), "yyyy-MM-dd");
-  const yesterday = format(new Date(Date.now() - 86400000), "yyyy-MM-dd");
+  const today = getTodayKST();
+  const yesterday = getYesterdayKST();
 
   let current = 0;
   let cursor = sorted.includes(today) ? today : yesterday;
@@ -50,8 +51,8 @@ export default async function StatsPage() {
   const allDates = [...new Set(allRecords.map((r) => r.date))];
   const { current: currentStreak, longest: longestStreak } = calcStreak(allDates);
 
-  const now = new Date();
-  const today = format(now, "yyyy-MM-dd");
+  const now = getNowKST();
+  const today = getTodayKST();
   const monthStr = format(now, "yyyy-MM");
   const thisMonthDates = new Set(allDates.filter((d) => d.startsWith(monthStr)));
 
