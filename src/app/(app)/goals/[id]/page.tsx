@@ -5,6 +5,7 @@ import MonthlyCalendar from "@/components/calendar/MonthlyCalendar";
 import ProgressBar from "@/components/goal/ProgressBar";
 import BackButton from "@/components/layout/BackButton";
 import MilestoneList from "@/components/goal/MilestoneList";
+import RecordMemoList from "@/components/goal/RecordMemoList";
 import GoalActions from "@/components/goal/GoalActions";
 import Link from "next/link";
 import CategoryIcon from "@/components/goal/CategoryIcon";
@@ -33,7 +34,7 @@ export default async function GoalDetailPage({
   const [{ data: records }, { data: milestones }] = await Promise.all([
     supabase
       .from("records")
-      .select("date, note")
+      .select("id, date, note")
       .eq("goal_id", id)
       .eq("user_id", user.id)
       .order("date", { ascending: false }),
@@ -45,7 +46,7 @@ export default async function GoalDetailPage({
   ]);
 
   const completedDates = (records ?? []).map((r) => r.date);
-  const notedRecords = (records ?? []).filter((r) => r.note);
+  const notedRecords = (records ?? []).filter((r): r is { id: string; date: string; note: string } => !!r.note);
   const totalDays =
     differenceInDays(parseISO(goal.end_date), parseISO(goal.start_date)) + 1;
   const doneDays = completedDates.length;
@@ -125,13 +126,11 @@ export default async function GoalDetailPage({
         </div>
 
         {/* 마일스톤 */}
-        {milestones && milestones.length > 0 && (
-          <MilestoneList
-            milestones={milestones}
-            goalId={id}
-            color={goal.color}
-          />
-        )}
+        <MilestoneList
+          milestones={milestones ?? []}
+          goalId={id}
+          color={goal.color}
+        />
 
         {/* 캘린더 */}
         <MonthlyCalendar
@@ -142,21 +141,11 @@ export default async function GoalDetailPage({
         />
 
         {/* 기록 메모 */}
-        {notedRecords.length > 0 && (
-          <div>
-            <h3 className="text-sm font-semibold text-[#2C2C2A] mb-3">기록 메모</h3>
-            <div className="flex flex-col gap-2">
-              {notedRecords.map((r) => (
-                <div key={r.date} className="bg-white border border-[#E8E8E6] rounded-xl px-4 py-3">
-                  <p className="text-xs font-medium mb-1" style={{ color: goal.color }}>
-                    {r.date.replace(/-/g, ".").slice(2)}
-                  </p>
-                  <p className="text-sm text-[#2C2C2A] leading-relaxed">{r.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <RecordMemoList
+          records={notedRecords as { id: string; date: string; note: string }[]}
+          goalId={id}
+          color={goal.color}
+        />
 
         {/* 보관/삭제 */}
         <GoalActions goalId={id} isArchived={goal.is_archived} isPublic={goal.is_public} />

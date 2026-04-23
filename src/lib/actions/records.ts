@@ -49,3 +49,33 @@ export async function updateNote(goalId: string, note: string) {
   revalidatePath("/");
   revalidatePath(`/goals/${goalId}`);
 }
+
+export async function updateRecordNote(recordId: string, goalId: string, note: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  await supabase
+    .from("records")
+    .update({ note: note.trim() || null })
+    .eq("id", recordId)
+    .eq("user_id", user.id);
+
+  revalidatePath("/");
+  revalidatePath(`/goals/${goalId}`);
+}
+
+export async function deleteRecordNote(recordId: string, goalId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  await supabase
+    .from("records")
+    .update({ note: null })
+    .eq("id", recordId)
+    .eq("user_id", user.id);
+
+  revalidatePath("/");
+  revalidatePath(`/goals/${goalId}`);
+}

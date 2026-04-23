@@ -18,6 +18,7 @@ export interface Record {
   goal_id: string;
   user_id: string;
   date: string; // YYYY-MM-DD
+  note: string | null;
   created_at: string;
 }
 

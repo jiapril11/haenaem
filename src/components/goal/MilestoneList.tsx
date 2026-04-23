@@ -1,7 +1,7 @@
 "use client";
 
-import { useTransition } from "react";
-import { toggleMilestone } from "@/lib/actions/milestones";
+import { useState, useTransition } from "react";
+import { toggleMilestone, createMilestone, updateMilestone, deleteMilestone } from "@/lib/actions/milestones";
 import type { Milestone } from "@/types";
 import { format, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -12,77 +12,185 @@ interface Props {
   color: string;
 }
 
+const PencilIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const TrashIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <polyline points="3 6 5 6 21 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 export default function MilestoneList({ milestones, goalId, color }: Props) {
   const [isPending, startTransition] = useTransition();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDate, setNewDate] = useState("");
 
-  if (milestones.length === 0) return null;
+  function startEdit(m: Milestone) {
+    setEditingId(m.id);
+    setEditTitle(m.title);
+    setEditDate(m.target_date ?? "");
+  }
+
+  function handleUpdate(m: Milestone) {
+    if (!editTitle.trim()) return;
+    startTransition(() => updateMilestone(m.id, goalId, editTitle, editDate || null));
+    setEditingId(null);
+  }
+
+  function handleCreate() {
+    if (!newTitle.trim()) return;
+    startTransition(() => createMilestone(goalId, newTitle, newDate || null));
+    setIsAdding(false);
+    setNewTitle("");
+    setNewDate("");
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-[#E8E8E6] overflow-hidden">
       <div className="px-4 pt-4 pb-2">
         <h3 className="text-sm font-semibold text-[#2C2C2A]">마일스톤</h3>
       </div>
-      <ul>
-        {milestones.map((m, i) => (
-          <li
-            key={m.id}
-            className={`flex items-center gap-3 px-4 py-3 ${
-              i < milestones.length - 1 ? "border-b border-[#F0F0EE]" : ""
-            }`}
-          >
-            {/* 체크박스 */}
-            <button
-              onClick={() =>
-                startTransition(() => toggleMilestone(m.id, goalId, m.is_done))
-              }
-              disabled={isPending}
-              className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all"
-              style={{
-                borderColor: m.is_done ? color : "#C0BFB8",
-                backgroundColor: m.is_done ? color : "transparent",
-              }}
+
+      {milestones.length > 0 && (
+        <ul>
+          {milestones.map((m, i) => (
+            <li
+              key={m.id}
+              className={`px-4 py-3 ${i < milestones.length - 1 ? "border-b border-[#F0F0EE]" : ""}`}
             >
-              {m.is_done && (
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path
-                    d="M2 5l2.5 2.5L8 3"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              {editingId === m.id ? (
+                <div className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+                    autoFocus
                   />
-                </svg>
+                  <input
+                    type="date"
+                    value={editDate}
+                    onChange={(e) => setEditDate(e.target.value)}
+                    className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+                  />
+                  <div className="flex gap-2 justify-end">
+                    <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
+                      취소
+                    </button>
+                    <button
+                      onClick={() => handleUpdate(m)}
+                      disabled={!editTitle.trim() || isPending}
+                      className="text-xs font-medium px-3 py-1.5 rounded-lg text-white disabled:opacity-40"
+                      style={{ backgroundColor: color }}
+                    >
+                      저장
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => startTransition(() => toggleMilestone(m.id, goalId, m.is_done))}
+                    disabled={isPending}
+                    className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all"
+                    style={{
+                      borderColor: m.is_done ? color : "#C0BFB8",
+                      backgroundColor: m.is_done ? color : "transparent",
+                    }}
+                  >
+                    {m.is_done && (
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <path d="M2 5l2.5 2.5L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </button>
+
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm ${m.is_done ? "line-through text-[#878680]" : "text-[#2C2C2A]"}`}>
+                      {m.title}
+                    </p>
+                    {m.target_date && (
+                      <p className="text-xs text-[#878680] mt-0.5">
+                        {format(parseISO(m.target_date), "M월 d일", { locale: ko })}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <button onClick={() => startEdit(m)} className="p-1.5 text-[#C0BFB8] hover:text-[#878680] transition-colors">
+                      <PencilIcon />
+                    </button>
+                    <button
+                      onClick={() => startTransition(() => deleteMilestone(m.id, goalId))}
+                      disabled={isPending}
+                      className="p-1.5 text-[#C0BFB8] hover:text-red-400 transition-colors"
+                    >
+                      <TrashIcon />
+                    </button>
+                  </div>
+                </div>
               )}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {isAdding ? (
+        <div className={`px-4 py-3 flex flex-col gap-2 ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}>
+          <input
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="마일스톤 이름"
+            className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+            autoFocus
+          />
+          <input
+            type="date"
+            value={newDate}
+            onChange={(e) => setNewDate(e.target.value)}
+            className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+          />
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => { setIsAdding(false); setNewTitle(""); setNewDate(""); }}
+              className="text-xs text-[#878680] px-3 py-1.5"
+            >
+              취소
             </button>
-
-            {/* 내용 */}
-            <div className="flex-1 min-w-0">
-              <p
-                className={`text-sm ${
-                  m.is_done ? "line-through text-[#878680]" : "text-[#2C2C2A]"
-                }`}
-              >
-                {m.title}
-              </p>
-              {m.target_date && (
-                <p className="text-xs text-[#878680] mt-0.5">
-                  {format(parseISO(m.target_date), "M월 d일", { locale: ko })}
-                </p>
-              )}
-            </div>
-
-            {/* 완료 뱃지 */}
-            {m.is_done && (
-              <span
-                className="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0"
-                style={{ backgroundColor: `${color}18`, color }}
-              >
-                완료
-              </span>
-            )}
-          </li>
-        ))}
-      </ul>
+            <button
+              onClick={handleCreate}
+              disabled={!newTitle.trim() || isPending}
+              className="text-xs font-medium px-3 py-1.5 rounded-lg text-white disabled:opacity-40"
+              style={{ backgroundColor: color }}
+            >
+              추가
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setIsAdding(true)}
+          className={`w-full px-4 py-3 text-sm text-[#878680] flex items-center gap-2 hover:bg-[#F8F8F9] transition-colors ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          마일스톤 추가
+        </button>
+      )}
     </div>
   );
 }
