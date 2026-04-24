@@ -13,18 +13,11 @@ export default async function MyCommentsPage() {
 
   const { data: myComments } = await supabase
     .from("comments")
-    .select("id, content, created_at, goal_id")
+    .select("id, content, created_at, goal_id, goals(id, title, color, category)")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   const comments = myComments ?? [];
-  const goalIds = [...new Set(comments.map((c) => c.goal_id))];
-
-  const { data: goals } = goalIds.length > 0
-    ? await supabase.from("goals").select("id, title, color, category").in("id", goalIds)
-    : { data: [] };
-
-  const goalMap = Object.fromEntries((goals ?? []).map((g) => [g.id, g]));
 
   return (
     <div className="px-4 pt-6 pb-6">
@@ -47,7 +40,7 @@ export default async function MyCommentsPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {comments.map((comment) => {
-            const goal = goalMap[comment.goal_id];
+            const goal = (Array.isArray(comment.goals) ? comment.goals[0] : comment.goals) as { id: string; title: string; color: string; category: string } | null;
             const dateStr = format(parseISO(comment.created_at), "M월 d일 (EEE)", { locale: ko });
             return (
               <div key={comment.id} className="bg-white rounded-2xl p-4 border border-[#E8E8E6]">

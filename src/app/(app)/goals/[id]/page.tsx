@@ -22,28 +22,13 @@ export default async function GoalDetailPage({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: goal } = await supabase
-    .from("goals")
-    .select("*")
-    .eq("id", id)
-    .eq("user_id", user.id)
-    .single();
+  const [{ data: goal }, { data: records }, { data: milestones }] = await Promise.all([
+    supabase.from("goals").select("*").eq("id", id).eq("user_id", user.id).single(),
+    supabase.from("records").select("id, date, note").eq("goal_id", id).eq("user_id", user.id).order("date", { ascending: false }),
+    supabase.from("milestones").select("*").eq("goal_id", id).order("target_date", { ascending: true, nullsFirst: false }),
+  ]);
 
   if (!goal) notFound();
-
-  const [{ data: records }, { data: milestones }] = await Promise.all([
-    supabase
-      .from("records")
-      .select("id, date, note")
-      .eq("goal_id", id)
-      .eq("user_id", user.id)
-      .order("date", { ascending: false }),
-    supabase
-      .from("milestones")
-      .select("*")
-      .eq("goal_id", id)
-      .order("target_date", { ascending: true, nullsFirst: false }),
-  ]);
 
   const completedDates = (records ?? []).map((r) => r.date);
   const notedRecords = (records ?? []).filter((r): r is { id: string; date: string; note: string } => !!r.note);

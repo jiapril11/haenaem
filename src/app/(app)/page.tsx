@@ -39,7 +39,7 @@ export default async function HomePage() {
 
   const [{ data: goals }, { data: records }, { data: profile }] = await Promise.all([
     supabase.from("goals").select("*").eq("user_id", user.id).eq("is_archived", false).order("created_at", { ascending: false }),
-    supabase.from("records").select("goal_id, date, note").eq("user_id", user.id),
+    supabase.from("records").select("goal_id, date, note").eq("user_id", user.id).gte("date", new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)),
     supabase.from("profiles").select("nickname").eq("id", user.id).single(),
   ]);
 
