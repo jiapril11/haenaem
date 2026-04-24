@@ -79,14 +79,16 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                     className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
                     autoFocus
                   />
-                  <div className="w-full">
+                  <div className="relative w-full">
                     <input
                       type="date"
                       value={editDate}
                       onChange={(e) => setEditDate(e.target.value)}
-                      className="w-full block text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
-                      style={{ width: "-webkit-fill-available" }}
+                      className="w-full block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-9 py-2 outline-none focus:border-[#6CBFA8]"
                     />
+                    <svg className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0BFB8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
                   </div>
                   <div className="flex gap-2 justify-end">
                     <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
@@ -160,14 +162,16 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
             className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
             autoFocus
           />
-          <div className="w-full">
+          <div className="relative w-full">
             <input
               type="date"
               value={newDate}
               onChange={(e) => setNewDate(e.target.value)}
-              className="w-full block text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
-              style={{ width: "-webkit-fill-available" }}
+              className="w-full block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-9 py-2 outline-none focus:border-[#6CBFA8]"
             />
+            <svg className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0BFB8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
           </div>
           <div className="flex gap-2 justify-end">
             <button

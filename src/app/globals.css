@@ -38,8 +38,7 @@ body {
   overflow-x: hidden;
 }
 
-/* iOS Safari: input[type="date"] ignores width:100% inside flex-col containers */
+/* iOS Safari: date input width fix */
 input[type="date"] {
   width: -webkit-fill-available;
-  width: stretch;
 }
