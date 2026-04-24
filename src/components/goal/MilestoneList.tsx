@@ -64,7 +64,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
       </div>
 
       {milestones.length > 0 && (
-        <ul className="w-full overflow-hidden">
+        <ul className="w-full">
           {milestones.map((m, i) => (
             <li
               key={m.id}
@@ -79,12 +79,14 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                     className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
                     autoFocus
                   />
-                  <input
-                    type="date"
-                    value={editDate}
-                    onChange={(e) => setEditDate(e.target.value)}
-                    className="w-full max-w-full min-w-0 block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
-                  />
+                  <div className="w-full">
+                    <input
+                      type="date"
+                      value={editDate}
+                      onChange={(e) => setEditDate(e.target.value)}
+                      className="w-full block text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+                    />
+                  </div>
                   <div className="flex gap-2 justify-end">
                     <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
                       취소
@@ -157,12 +159,14 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
             className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
             autoFocus
           />
-          <input
-            type="date"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
-            className="w-full max-w-full min-w-0 block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
-          />
+          <div className="w-full">
+            <input
+              type="date"
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+              className="w-full block text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+            />
+          </div>
           <div className="flex gap-2 justify-end">
             <button
               onClick={() => { setIsAdding(false); setNewTitle(""); setNewDate(""); }}
