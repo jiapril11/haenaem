@@ -85,6 +85,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                       value={editDate}
                       onChange={(e) => setEditDate(e.target.value)}
                       className="w-full block text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+                      style={{ width: "-webkit-fill-available" }}
                     />
                   </div>
                   <div className="flex gap-2 justify-end">
@@ -165,6 +166,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
               value={newDate}
               onChange={(e) => setNewDate(e.target.value)}
               className="w-full block text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+              style={{ width: "-webkit-fill-available" }}
             />
           </div>
           <div className="flex gap-2 justify-end">
