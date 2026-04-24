@@ -58,7 +58,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E8E8E6] overflow-hidden">
+    <div className="bg-white rounded-2xl border border-[#E8E8E6]">
       <div className="px-4 pt-4 pb-2">
         <h3 className="text-sm font-semibold text-[#2C2C2A]">마일스톤</h3>
       </div>
@@ -83,7 +83,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                     type="date"
                     value={editDate}
                     onChange={(e) => setEditDate(e.target.value)}
-                    className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+                    className="w-full block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
                   />
                   <div className="flex gap-2 justify-end">
                     <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
@@ -161,7 +161,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
             type="date"
             value={newDate}
             onChange={(e) => setNewDate(e.target.value)}
-            className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+            className="w-full block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
           />
           <div className="flex gap-2 justify-end">
             <button
@@ -183,7 +183,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
       ) : (
         <button
           onClick={() => setIsAdding(true)}
-          className={`w-full px-4 py-3 text-sm text-[#878680] flex items-center gap-2 hover:bg-[#F8F8F9] transition-colors ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}
+          className={`w-full px-4 py-3 text-sm text-[#878680] flex items-center gap-2 hover:bg-[#F8F8F9] transition-colors rounded-b-2xl ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
