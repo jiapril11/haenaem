@@ -79,7 +79,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                     className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
                     autoFocus
                   />
-                  <div className="relative w-full">
+                  <div className="relative w-full border-2 border-red-500">
                     <input
                       type="date"
                       value={editDate}
@@ -162,7 +162,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
             className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
             autoFocus
           />
-          <div className="relative w-full">
+          <div className="relative w-full border-2 border-red-500">
             <input
               type="date"
               value={newDate}
