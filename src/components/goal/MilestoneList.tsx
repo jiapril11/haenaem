@@ -64,26 +64,26 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
       </div>
 
       {milestones.length > 0 && (
-        <ul>
+        <ul className="w-full overflow-hidden">
           {milestones.map((m, i) => (
             <li
               key={m.id}
               className={`px-4 py-3 ${i < milestones.length - 1 ? "border-b border-[#F0F0EE]" : ""}`}
             >
               {editingId === m.id ? (
-                <div className="flex flex-col gap-2">
+                <div className="w-full min-w-0 flex flex-col gap-2">
                   <input
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
-                    className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+                    className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
                     autoFocus
                   />
                   <input
                     type="date"
                     value={editDate}
                     onChange={(e) => setEditDate(e.target.value)}
-                    className="w-full block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
+                    className="w-full max-w-full min-w-0 block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
                   />
                   <div className="flex gap-2 justify-end">
                     <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
@@ -148,20 +148,20 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
       )}
 
       {isAdding ? (
-        <div className={`px-4 py-3 flex flex-col gap-2 ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}>
+        <div className={`px-4 py-3 w-full min-w-0 flex flex-col gap-2 ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}>
           <input
             type="text"
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="마일스톤 이름"
-            className="w-full text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
+            className="w-full min-w-0 text-sm border border-[#E8E8E6] rounded-lg px-3 py-2 outline-none focus:border-[#6CBFA8]"
             autoFocus
           />
           <input
             type="date"
             value={newDate}
             onChange={(e) => setNewDate(e.target.value)}
-            className="w-full block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
+            className="w-full max-w-full min-w-0 block text-sm border border-[#E8E8E6] rounded-lg pl-3 pr-1 py-2 outline-none focus:border-[#6CBFA8]"
           />
           <div className="flex gap-2 justify-end">
             <button
