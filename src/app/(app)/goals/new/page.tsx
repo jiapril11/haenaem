@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { createGoal } from "@/lib/actions/goals";
 import type { Category } from "@/types";
 import CategoryIcon from "@/components/goal/CategoryIcon";
+import { subscribeToPush, isPushSupported } from "@/lib/push";
 
 const CATEGORIES: Category[] = ["운동", "학습", "커리어", "예술", "금융", "마음", "습관", "기타"];
 
@@ -37,6 +38,8 @@ export default function NewGoalPage() {
   const [endDate, setEndDate] = useState("");
   const [milestones, setMilestones] = useState<MilestoneInput[]>([]);
   const [isPublic, setIsPublic] = useState(false);
+  const [notificationEnabled, setNotificationEnabled] = useState(false);
+  const [notificationTime, setNotificationTime] = useState("09:00");
 
   function addMilestone() {
     setMilestones((prev) => [...prev, { title: "", target_date: "" }]);
@@ -52,11 +55,32 @@ export default function NewGoalPage() {
     setMilestones((prev) => prev.filter((_, idx) => idx !== i));
   }
 
+  async function handleNotificationToggle() {
+    if (notificationEnabled) {
+      setNotificationEnabled(false);
+      return;
+    }
+    if (!isPushSupported()) {
+      alert("이 브라우저는 푸시 알림을 지원하지 않아요.");
+      return;
+    }
+    const success = await subscribeToPush();
+    if (success) {
+      setNotificationEnabled(true);
+    } else {
+      alert("알림 권한이 필요해요. 브라우저 설정에서 알림을 허용해주세요.");
+    }
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim() || !category || !endDate) return;
     startTransition(() => {
-      createGoal({ title, category, color, start_date: startDate, end_date: endDate, milestones, is_public: isPublic });
+      createGoal({
+        title, category, color, start_date: startDate, end_date: endDate,
+        milestones, is_public: isPublic,
+        notification_time: notificationEnabled ? notificationTime : null,
+      });
     });
   }
 
@@ -218,6 +242,32 @@ export default function NewGoalPage() {
             ))}
           </div>
         </div>
+
+        {/* 알림 설정 */}
+        <button
+          type="button"
+          onClick={handleNotificationToggle}
+          className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5"
+        >
+          <div>
+            <p className="text-sm font-medium text-[#2C2C2A] text-left">매일 알림 받기</p>
+            <p className="text-xs text-[#878680] text-left mt-0.5">설정한 시간에 목표 달성을 독려해드려요</p>
+          </div>
+          <div className={`w-11 h-6 rounded-full transition-colors flex items-center px-0.5 flex-shrink-0 ${notificationEnabled ? "bg-[#6CBFA8]" : "bg-[#E8E8E6]"}`}>
+            <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${notificationEnabled ? "translate-x-5" : "translate-x-0"}`} />
+          </div>
+        </button>
+        {notificationEnabled && (
+          <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-4 py-3">
+            <p className="text-sm text-[#878680] flex-shrink-0">알림 시간</p>
+            <input
+              type="time"
+              value={notificationTime}
+              onChange={(e) => setNotificationTime(e.target.value)}
+              className="flex-1 text-sm text-[#2C2C2A] outline-none bg-transparent"
+            />
+          </div>
+        )}
 
         {/* 커뮤니티 공개 */}
         <button

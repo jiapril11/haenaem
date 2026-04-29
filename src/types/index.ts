@@ -10,6 +10,7 @@ export interface Goal {
   end_date: string;   // YYYY-MM-DD
   is_public: boolean;
   is_archived: boolean;
+  notification_time: string | null; // HH:MM
   created_at: string;
 }
 

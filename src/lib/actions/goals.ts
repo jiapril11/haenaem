@@ -13,6 +13,7 @@ export async function createGoal(formData: {
   end_date: string;
   milestones: { title: string; target_date: string }[];
   is_public?: boolean;
+  notification_time?: string | null;
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -28,6 +29,7 @@ export async function createGoal(formData: {
       start_date: formData.start_date,
       end_date: formData.end_date,
       is_public: formData.is_public ?? false,
+      notification_time: formData.notification_time ?? null,
     })
     .select()
     .single();
@@ -60,6 +62,7 @@ export async function updateGoal(
     color: string;
     start_date: string;
     end_date: string;
+    notification_time?: string | null;
   }
 ) {
   const supabase = await createClient();
@@ -73,6 +76,7 @@ export async function updateGoal(
       color: formData.color,
       start_date: formData.start_date,
       end_date: formData.end_date,
+      notification_time: formData.notification_time ?? null,
     })
     .eq("id", goalId)
     .eq("user_id", user.id);
