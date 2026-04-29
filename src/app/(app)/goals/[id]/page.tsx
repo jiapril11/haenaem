@@ -132,6 +132,25 @@ export default async function GoalDetailPage({
           color={goal.color}
         />
 
+        {/* 알림 설정 */}
+        {goal.notification_time && (
+          <div className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 border border-[#E8E8E6]">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: `${goal.color}20` }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1.5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" fill={goal.color} />
+                <path d="M8 4.5a.5.5 0 0 1 .5.5v3.25l2 1.15a.5.5 0 1 1-.5.87l-2.25-1.3A.5.5 0 0 1 7.5 8.5V5a.5.5 0 0 1 .5-.5z" fill={goal.color} />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs text-[#878680]">매일 알림</p>
+              <p className="text-sm font-semibold text-[#2C2C2A]">{goal.notification_time}</p>
+            </div>
+          </div>
+        )}
+
         {/* 보관/삭제 */}
         <GoalActions goalId={id} isArchived={goal.is_archived} isPublic={goal.is_public} />
       </div>
