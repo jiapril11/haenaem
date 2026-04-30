@@ -72,9 +72,27 @@ export default async function GoalDetailPage({
               {goal.category}
             </p>
             <h1 className="text-lg font-bold text-[#2C2C2A]">{goal.title}</h1>
-            <p className="text-xs text-[#878680] mt-0.5">
-              {startFmt} – {endFmt}
-            </p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <p className="text-xs text-[#878680]">
+                {startFmt} – {endFmt}
+              </p>
+              <div className="w-px h-3 bg-[#D8D8D4]" />
+              {goal.notification_time ? (
+                <div className="flex items-center gap-1">
+                  <svg width="13" height="14" viewBox="0 0 13 14" fill="none">
+                    <path d="M6.5 0.875C6.5 0.875 6.5 0.875 6.5 0.875C4.01472 0.875 2 2.88972 2 5.375V8.125L0.875 9.625H12.125L11 8.125V5.375C11 2.88972 8.98528 0.875 6.5 0.875Z" fill={goal.color} />
+                    <path d="M5 11.375C5 12.2034 5.67157 12.875 6.5 12.875C7.32843 12.875 8 12.2034 8 11.375" stroke={goal.color} strokeWidth="1.2" strokeLinecap="round" />
+                  </svg>
+                  <span className="text-xs font-medium" style={{ color: goal.color }}>{goal.notification_time}</span>
+                </div>
+              ) : (
+                <svg width="13" height="14" viewBox="0 0 13 14" fill="none">
+                  <path d="M6.5 0.875C4.01472 0.875 2 2.88972 2 5.375V8.125L0.875 9.625H12.125L11 8.125V5.375C11 2.88972 8.98528 0.875 6.5 0.875Z" fill="#C8C8C4" />
+                  <path d="M5 11.375C5 12.2034 5.67157 12.875 6.5 12.875C7.32843 12.875 8 12.2034 8 11.375" stroke="#C8C8C4" strokeWidth="1.2" strokeLinecap="round" />
+                  <line x1="1.5" y1="1.5" x2="11.5" y2="12.5" stroke="#C8C8C4" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              )}
+            </div>
           </div>
         </div>
 
@@ -131,25 +149,6 @@ export default async function GoalDetailPage({
           goalId={id}
           color={goal.color}
         />
-
-        {/* 알림 설정 */}
-        {goal.notification_time && (
-          <div className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 border border-[#E8E8E6]">
-            <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: `${goal.color}20` }}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1.5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" fill={goal.color} />
-                <path d="M8 4.5a.5.5 0 0 1 .5.5v3.25l2 1.15a.5.5 0 1 1-.5.87l-2.25-1.3A.5.5 0 0 1 7.5 8.5V5a.5.5 0 0 1 .5-.5z" fill={goal.color} />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs text-[#878680]">매일 알림</p>
-              <p className="text-sm font-semibold text-[#2C2C2A]">{goal.notification_time}</p>
-            </div>
-          </div>
-        )}
 
         {/* 보관/삭제 */}
         <GoalActions goalId={id} isArchived={goal.is_archived} isPublic={goal.is_public} />
