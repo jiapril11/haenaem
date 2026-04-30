@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -62,6 +63,9 @@ export default function RootLayout({
     <html lang="ko" className={inter.variable}>
       <body className="min-h-screen bg-[#F8F8F9] text-[#2C2C2A] antialiased">
         {children}
+        <Script id="sw-register" strategy="afterInteractive">
+          {`if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }`}
+        </Script>
       </body>
     </html>
   );
