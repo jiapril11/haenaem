@@ -34,20 +34,11 @@ export const metadata: Metadata = {
     siteName: "해냄!",
     title: "해냄! - 장기 목표 추적 앱",
     description: "목표를 세우고, 매일 기록하고, 결국 해내는 장기 목표 추적 앱",
-    images: [
-      {
-        url: "/icon-512.png",
-        width: 512,
-        height: 512,
-        alt: "해냄! 로고",
-      },
-    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "해냄! - 장기 목표 추적 앱",
     description: "목표를 세우고, 매일 기록하고, 결국 해내는 장기 목표 추적 앱",
-    images: ["/icon-512.png"],
   },
   robots: {
     index: true,
