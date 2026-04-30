@@ -9,11 +9,16 @@ if (!fs.existsSync(swPath)) {
 }
 
 const pushHandler = `self.addEventListener("push", function(event) {
-  if (!event.data) return;
-  var data = event.data.json();
-  var title = data.title || "해냄!";
-  var options = { body: data.body || "", icon: "/icon-192.png" };
-  event.waitUntil(self.registration.showNotification(title, options));
+  var title = "해냄!";
+  var body = "";
+  try {
+    if (event.data) {
+      var data = event.data.json();
+      title = data.title || title;
+      body = data.body || body;
+    }
+  } catch(e) {}
+  event.waitUntil(self.registration.showNotification(title, { body: body, icon: "/icon-192.png" }));
 });
 self.addEventListener("notificationclick", function(event) {
   event.notification.close();
