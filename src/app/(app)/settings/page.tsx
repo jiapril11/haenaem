@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import SignOutButton from "@/components/settings/SignOutButton";
 import NicknameForm from "@/components/settings/NicknameForm";
-import PushTestButton from "@/components/settings/PushTestButton";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
@@ -57,9 +56,6 @@ export default async function SettingsPage() {
           <span className="text-sm text-[#878680]">→</span>
         </a>
       </div>
-
-      {/* 알림 테스트 */}
-      <PushTestButton />
 
       {/* 로그아웃 */}
       <SignOutButton />
