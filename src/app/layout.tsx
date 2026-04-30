@@ -7,9 +7,18 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const BASE_URL = "https://haenaem-jet.vercel.app";
+
 export const metadata: Metadata = {
-  title: "해냄!",
-  description: "장기 목표 추적 앱",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "해냄!",
+    template: "%s | 해냄!",
+  },
+  description: "목표를 세우고, 매일 기록하고, 결국 해내는 장기 목표 추적 앱",
+  keywords: ["목표 관리", "습관 트래커", "목표 달성", "자기계발", "해냄"],
+  authors: [{ name: "해냄!" }],
+  creator: "해냄!",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -17,6 +26,32 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: BASE_URL,
+    siteName: "해냄!",
+    title: "해냄! - 장기 목표 추적 앱",
+    description: "목표를 세우고, 매일 기록하고, 결국 해내는 장기 목표 추적 앱",
+    images: [
+      {
+        url: "/icon-512.png",
+        width: 512,
+        height: 512,
+        alt: "해냄! 로고",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "해냄! - 장기 목표 추적 앱",
+    description: "목표를 세우고, 매일 기록하고, 결국 해내는 장기 목표 추적 앱",
+    images: ["/icon-512.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
