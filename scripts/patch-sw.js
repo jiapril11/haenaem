@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
-const swPath = path.join(__dirname, "../public/sw.js");
+const swPath = path.join(process.cwd(), "public/sw.js");
+console.log("📂 Looking for sw.js at:", swPath);
 
 if (!fs.existsSync(swPath)) {
   console.error("sw.js not found, skipping patch");
