@@ -35,5 +35,9 @@ self.addEventListener("notificationclick", function(event) {
 `;
 
 const original = fs.readFileSync(swPath, "utf8");
+if (original.includes('addEventListener("push"')) {
+  console.log("⏭️ sw.js already has push handler, skipping patch");
+  process.exit(0);
+}
 fs.writeFileSync(swPath, pushHandler + original);
 console.log("✅ sw.js patched with push handler");
