@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import SignOutButton from "@/components/settings/SignOutButton";
+import DeleteAccountButton from "@/components/settings/DeleteAccountButton";
 import NicknameForm from "@/components/settings/NicknameForm";
 
 export default async function SettingsPage() {
@@ -59,6 +60,9 @@ export default async function SettingsPage() {
 
       {/* 로그아웃 */}
       <SignOutButton />
+
+      {/* 회원 탈퇴 */}
+      <DeleteAccountButton />
     </div>
   );
 }
