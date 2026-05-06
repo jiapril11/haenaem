@@ -146,30 +146,32 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
         </div>
 
         {/* 알림 설정 */}
-        <button
-          type="button"
-          onClick={handleNotificationToggle}
-          className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5"
-        >
-          <div>
-            <p className="text-sm font-medium text-[#2C2C2A] text-left">매일 알림 받기</p>
-            <p className="text-xs text-[#878680] text-left mt-0.5">설정한 시간에 목표 달성을 독려해드려요</p>
-          </div>
-          <div className={`w-11 h-6 rounded-full transition-colors flex items-center px-0.5 flex-shrink-0 ${notificationEnabled ? "bg-[#6CBFA8]" : "bg-[#E8E8E6]"}`}>
-            <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${notificationEnabled ? "translate-x-5" : "translate-x-0"}`} />
-          </div>
-        </button>
-        {notificationEnabled && (
-          <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-4 py-3">
-            <p className="text-sm text-[#878680] flex-shrink-0">알림 시간</p>
-            <input
-              type="time"
-              value={notificationTime}
-              onChange={(e) => setNotificationTime(e.target.value)}
-              className="flex-1 text-sm text-[#2C2C2A] outline-none bg-transparent"
-            />
-          </div>
-        )}
+        <div className="flex flex-col gap-1.5">
+          <button
+            type="button"
+            onClick={handleNotificationToggle}
+            className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5"
+          >
+            <div>
+              <p className="text-sm font-medium text-[#2C2C2A] text-left">매일 알림 받기</p>
+              <p className="text-xs text-[#878680] text-left mt-0.5">설정한 시간에 목표 달성을 독려해드려요</p>
+            </div>
+            <div className={`w-11 h-6 rounded-full transition-colors flex items-center px-0.5 flex-shrink-0 ${notificationEnabled ? "bg-[#6CBFA8]" : "bg-[#E8E8E6]"}`}>
+              <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${notificationEnabled ? "translate-x-5" : "translate-x-0"}`} />
+            </div>
+          </button>
+          {notificationEnabled && (
+            <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-4 py-3">
+              <p className="text-sm text-[#878680] flex-shrink-0">알림 시간</p>
+              <input
+                type="time"
+                value={notificationTime}
+                onChange={(e) => setNotificationTime(e.target.value)}
+                className="flex-1 text-sm text-[#2C2C2A] outline-none bg-transparent"
+              />
+            </div>
+          )}
+        </div>
 
         {/* 저장 버튼 */}
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4">

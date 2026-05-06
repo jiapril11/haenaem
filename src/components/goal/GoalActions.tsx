@@ -7,10 +7,11 @@ import { deleteGoal, archiveGoal, togglePublic } from "@/lib/actions/goals";
 interface Props {
   goalId: string;
   isArchived: boolean;
+  archiveReason: "expired" | "manual" | null;
   isPublic: boolean;
 }
 
-export default function GoalActions({ goalId, isArchived, isPublic }: Props) {
+export default function GoalActions({ goalId, isArchived, archiveReason, isPublic }: Props) {
   const [isPending, startTransition] = useTransition();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [publicState, setPublicState] = useState(isPublic);
@@ -55,14 +56,16 @@ export default function GoalActions({ goalId, isArchived, isPublic }: Props) {
       </button>
 
       <div className="flex gap-2">
-        {/* 아카이브 버튼 */}
-        <button
-          onClick={handleArchive}
-          disabled={isPending}
-          className="flex-1 py-3 rounded-xl border border-[#E8E8E6] bg-white text-sm font-medium text-[#878680] disabled:opacity-50"
-        >
-          {isArchived ? "복원하기" : "보관하기"}
-        </button>
+        {/* 아카이브 버튼 - 자동 완료된 목표는 보관/복원 불가 */}
+        {archiveReason !== "expired" && (
+          <button
+            onClick={handleArchive}
+            disabled={isPending}
+            className="flex-1 py-3 rounded-xl border border-[#E8E8E6] bg-white text-sm font-medium text-[#878680] disabled:opacity-50"
+          >
+            {isArchived ? "복원하기" : "보관하기"}
+          </button>
+        )}
 
         {/* 삭제 버튼 */}
         <button

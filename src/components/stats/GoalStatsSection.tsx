@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
+import Link from "next/link";
 import ProgressBar from "@/components/goal/ProgressBar";
 import CategoryIcon from "@/components/goal/CategoryIcon";
 import type { Goal } from "@/types";
@@ -52,7 +53,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
           ) : (
             <div className="space-y-4">
               {activeGoalStats.map(({ goal, doneDays, totalDays, percent, streak }) => (
-                <div key={goal.id}>
+                <Link key={goal.id} href={`/goals/${goal.id}`} className="block">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
                       <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>
@@ -67,7 +68,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
                   </div>
                   <ProgressBar percent={percent} color={goal.color} />
                   <p className="text-[10px] text-[#C0BFB8] mt-1">{doneDays}일 / {totalDays}일</p>
-                </div>
+                </Link>
               ))}
             </div>
           )
@@ -82,7 +83,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
           ) : (
             <div className="space-y-4">
               {stats.map(({ goal, doneDays, totalDays, percent }) => (
-                <div key={goal.id}>
+                <Link key={goal.id} href={`/goals/${goal.id}`} className="block">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
                       <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>
@@ -99,7 +100,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
                   </div>
                   <ProgressBar percent={percent} color={goal.color} />
                   <p className="text-[10px] text-[#C0BFB8] mt-1">{doneDays}일 / {totalDays}일 완료</p>
-                </div>
+                </Link>
               ))}
             </div>
           );

@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
+import { getTodayKST } from "@/lib/utils/date";
 import MonthlyCalendar from "@/components/calendar/MonthlyCalendar";
 import ProgressBar from "@/components/goal/ProgressBar";
 import BackButton from "@/components/layout/BackButton";
@@ -30,6 +31,8 @@ export default async function GoalDetailPage({
 
   if (!goal) notFound();
 
+  const isExpired = goal.end_date < getTodayKST();
+
   const completedDates = (records ?? []).map((r) => r.date);
   const notedRecords = (records ?? []).filter((r): r is { id: string; date: string; note: string } => !!r.note);
   const totalDays =
@@ -52,12 +55,14 @@ export default async function GoalDetailPage({
       >
         <div className="flex items-center justify-between mb-0">
           <BackButton />
-          <Link
-            href={`/goals/${id}/edit`}
-            className="mb-4 text-sm font-medium px-3 py-1.5 rounded-xl bg-white border border-[#E8E8E6] text-[#878680]"
-          >
-            수정
-          </Link>
+          {!isExpired && (
+            <Link
+              href={`/goals/${id}/edit`}
+              className="mb-4 text-sm font-medium px-3 py-1.5 rounded-xl bg-white border border-[#E8E8E6] text-[#878680]"
+            >
+              수정
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-3 mb-4">
@@ -151,7 +156,7 @@ export default async function GoalDetailPage({
         />
 
         {/* 보관/삭제 */}
-        <GoalActions goalId={id} isArchived={goal.is_archived} isPublic={goal.is_public} />
+        <GoalActions goalId={id} isArchived={goal.is_archived} archiveReason={goal.archive_reason} isPublic={goal.is_public} />
       </div>
     </div>
   );
