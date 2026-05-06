@@ -155,11 +155,15 @@ export default async function StatsPage() {
                   className="w-full aspect-square rounded-lg flex items-center justify-center"
                   style={{ backgroundColor: isDone ? "#6CBFA8" : isFuture ? "#F0F0EE" : "#FFE8E3" }}
                 >
-                  {isDone && (
+                  {isDone ? (
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                       <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                  )}
+                  ) : !isFuture ? (
+                    <svg width="8" height="2" viewBox="0 0 8 2" fill="none">
+                      <path d="M1 1h6" stroke="#D75A2F" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+                    </svg>
+                  ) : null}
                 </div>
               </div>
             );
@@ -195,9 +199,15 @@ export default async function StatsPage() {
             else if (!isFuture) bg = "#FFE8E3";
             return (
               <div key={dayStr} className="aspect-square rounded-lg flex items-center justify-center" style={{ backgroundColor: bg }}>
-                <span className={`text-[10px] font-medium ${isDone ? "text-white" : "text-[#878680]"}`}>
-                  {format(day, "d")}
-                </span>
+                {isDone ? (
+                  <span className="text-[10px] font-medium text-white">{format(day, "d")}</span>
+                ) : !isFuture && !isToday ? (
+                  <svg width="8" height="2" viewBox="0 0 8 2" fill="none">
+                    <path d="M1 1h6" stroke="#D75A2F" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+                  </svg>
+                ) : (
+                  <span className="text-[10px] font-medium text-[#878680]">{format(day, "d")}</span>
+                )}
               </div>
             );
           })}
