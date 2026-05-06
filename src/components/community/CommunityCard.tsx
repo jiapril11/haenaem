@@ -172,17 +172,18 @@ export default function CommunityCard({
             <div className="flex flex-col gap-2.5 mb-3">
               {comments.map((c) => (
                 <div key={c.id} className="flex items-start gap-2">
-                  <div className="w-5 h-5 rounded-full bg-[#E8E8E6] flex items-center justify-center text-[9px] font-bold text-[#878680] flex-shrink-0 mt-0.5">
+                  <div className="w-5 h-5 rounded-full bg-[#E8E8E6] flex items-center justify-center text-[9px] font-bold text-[#878680] flex-shrink-0">
                     {c.nickname[0]}
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0" style={{ lineHeight: "20px" }}>
                     <span className="text-xs font-semibold text-[#2C2C2A] mr-1.5">{c.nickname}</span>
                     <span className="text-xs text-[#878680] break-words">{c.content}</span>
                   </div>
                   {c.userId === currentUserId && (
                     <button
                       onClick={() => handleDeleteComment(c.id)}
-                      className="text-[#C0BFB8] hover:text-[#D75A2F] flex-shrink-0 mt-0.5 transition-colors"
+                      className="text-[#C0BFB8] hover:text-[#D75A2F] flex-shrink-0 transition-colors"
+                      style={{ lineHeight: "20px" }}
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
