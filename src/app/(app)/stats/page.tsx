@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { format, differenceInDays, parseISO, getDaysInMonth, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, getDay } from "date-fns";
+import { format, differenceInDays, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, getDay } from "date-fns";
 import { getTodayKST, getYesterdayKST, getNowKST } from "@/lib/utils/date";
 import { ko } from "date-fns/locale";
 import ProgressBar from "@/components/goal/ProgressBar";
 import CategoryIcon from "@/components/goal/CategoryIcon";
+import StatsTabs, { type StatsTab } from "@/components/stats/StatsTabs";
 
 function calcStreak(dates: string[]): { current: number; longest: number } {
   if (dates.length === 0) return { current: 0, longest: 0 };
@@ -34,10 +36,18 @@ function calcStreak(dates: string[]): { current: number; longest: number } {
   return { current, longest };
 }
 
-export default async function StatsPage() {
+export default async function StatsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  const { tab } = await searchParams;
+  const activeTab: StatsTab =
+    tab === "completed" ? "completed" : tab === "archived" ? "archived" : "active";
 
   const [{ data: goals }, { data: records }] = await Promise.all([
     supabase.from("goals").select("*").eq("user_id", user.id),
@@ -46,7 +56,10 @@ export default async function StatsPage() {
 
   const allGoals = goals ?? [];
   const allRecords = records ?? [];
+
   const activeGoals = allGoals.filter((g) => !g.is_archived);
+  const completedGoals = allGoals.filter((g) => g.is_archived && g.archive_reason === "expired");
+  const manualArchivedGoals = allGoals.filter((g) => g.is_archived && g.archive_reason === "manual");
 
   const allDates = [...new Set(allRecords.map((r) => r.date))];
   const { current: currentStreak, longest: longestStreak } = calcStreak(allDates);
@@ -56,25 +69,21 @@ export default async function StatsPage() {
   const monthStr = format(now, "yyyy-MM");
   const thisMonthDates = new Set(allDates.filter((d) => d.startsWith(monthStr)));
 
-  // 이번 주 현황 (월요일 시작)
   const weekStart = startOfWeek(now, { weekStartsOn: 1 });
   const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
   const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
   const weekDoneSet = new Set(allDates);
   const DAY_LABELS = ["월", "화", "수", "목", "금", "토", "일"];
 
-  // 이번 달 히트맵
   const monthDays = eachDayOfInterval({ start: startOfMonth(now), end: endOfMonth(now) });
-  const firstDayOfWeek = (getDay(startOfMonth(now)) + 6) % 7; // 월요일=0 기준
+  const firstDayOfWeek = (getDay(startOfMonth(now)) + 6) % 7;
   const WEEK_LABELS = ["월", "화", "수", "목", "금", "토", "일"];
 
-  // 요일별 패턴 (월=0 ~ 일=6)
   const dayPattern = Array(7).fill(0).map(() => ({ done: 0, total: 0 }));
   allDates.forEach((d) => {
     const dow = (getDay(parseISO(d)) + 6) % 7;
     dayPattern[dow].done++;
   });
-  // 전체 해당 요일 수 계산 (목표 기간 기준)
   activeGoals.forEach((goal) => {
     const start = parseISO(goal.start_date);
     const end = parseISO(goal.end_date) < now ? parseISO(goal.end_date) : now;
@@ -86,14 +95,22 @@ export default async function StatsPage() {
   });
   const maxDayDone = Math.max(...dayPattern.map((d) => d.done), 1);
 
-  // 목표별 달성률
-  const goalStats = activeGoals.map((goal) => {
+  const activeGoalStats = activeGoals.map((goal) => {
     const goalRecords = allRecords.filter((r) => r.goal_id === goal.id).map((r) => r.date);
     const totalDays = differenceInDays(parseISO(goal.end_date), parseISO(goal.start_date)) + 1;
     const doneDays = goalRecords.length;
     const percent = Math.round((doneDays / totalDays) * 100);
     const { current } = calcStreak(goalRecords);
     return { goal, doneDays, totalDays, percent, streak: current };
+  }).sort((a, b) => b.percent - a.percent);
+
+  const tabGoals = activeTab === "completed" ? completedGoals : manualArchivedGoals;
+  const archivedGoalStats = tabGoals.map((goal) => {
+    const goalRecords = allRecords.filter((r) => r.goal_id === goal.id).map((r) => r.date);
+    const totalDays = differenceInDays(parseISO(goal.end_date), parseISO(goal.start_date)) + 1;
+    const doneDays = goalRecords.length;
+    const percent = Math.round((doneDays / totalDays) * 100);
+    return { goal, doneDays, totalDays, percent };
   }).sort((a, b) => b.percent - a.percent);
 
   if (allGoals.length === 0) {
@@ -113,7 +130,7 @@ export default async function StatsPage() {
       <div className="grid grid-cols-2 gap-3">
         {[
           { label: "진행 중 목표", value: `${activeGoals.length}개` },
-          { label: "총 완료일", value: `${allDates.length}일` },
+          { label: "완료한 목표", value: `${completedGoals.length}개` },
           { label: "현재 스트릭", value: currentStreak > 0 ? `${currentStreak}일 🔥` : "0일" },
           { label: "최장 스트릭", value: longestStreak > 0 ? `${longestStreak}일 ⚡` : "0일" },
         ].map((item) => (
@@ -140,9 +157,7 @@ export default async function StatsPage() {
                 </span>
                 <div
                   className="w-full aspect-square rounded-lg flex items-center justify-center"
-                  style={{
-                    backgroundColor: isDone ? "#6CBFA8" : isFuture ? "#F0F0EE" : "#FFE8E3",
-                  }}
+                  style={{ backgroundColor: isDone ? "#6CBFA8" : isFuture ? "#F0F0EE" : "#FFE8E3" }}
                 >
                   {isDone && (
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
@@ -166,13 +181,11 @@ export default async function StatsPage() {
             {thisMonthDates.size} / {now.getDate()}일 완료
           </span>
         </div>
-        {/* 요일 헤더 */}
         <div className="grid grid-cols-7 gap-1 mb-1">
           {WEEK_LABELS.map((d) => (
             <div key={d} className="text-center text-[10px] text-[#C0BFB8] font-medium">{d}</div>
           ))}
         </div>
-        {/* 날짜 그리드 */}
         <div className="grid grid-cols-7 gap-1">
           {Array(firstDayOfWeek).fill(null).map((_, i) => <div key={`empty-${i}`} />)}
           {monthDays.map((day) => {
@@ -222,33 +235,72 @@ export default async function StatsPage() {
       </div>
 
       {/* 목표별 현황 */}
-      {goalStats.length > 0 && (
-        <div className="bg-white rounded-2xl p-4 border border-[#E8E8E6]">
-          <h2 className="text-sm font-semibold text-[#2C2C2A] mb-4">목표별 현황</h2>
-          <div className="space-y-4">
-            {goalStats.map(({ goal, doneDays, totalDays, percent, streak }) => (
-              <div key={goal.id}>
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>
-                      <CategoryIcon category={goal.category} size={14} color={goal.color} />
+      <div className="bg-white rounded-2xl p-4 border border-[#E8E8E6]">
+        <h2 className="text-sm font-semibold text-[#2C2C2A] mb-3">목표별 현황</h2>
+        <Suspense>
+          <StatsTabs active={activeTab} />
+        </Suspense>
+
+        <div className="mt-4">
+          {activeTab === "active" && (
+            activeGoalStats.length === 0 ? (
+              <p className="text-sm text-[#878680] text-center py-4">진행 중인 목표가 없어요</p>
+            ) : (
+              <div className="space-y-4">
+                {activeGoalStats.map(({ goal, doneDays, totalDays, percent, streak }) => (
+                  <div key={goal.id}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>
+                          <CategoryIcon category={goal.category} size={14} color={goal.color} />
+                        </div>
+                        <span className="text-sm text-[#2C2C2A] truncate">{goal.title}</span>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                        {streak > 0 && <span className="text-xs text-[#878680]">🔥 {streak}일</span>}
+                        <span className="text-xs font-semibold" style={{ color: goal.color }}>{percent}%</span>
+                      </div>
                     </div>
-                    <span className="text-sm text-[#2C2C2A] truncate">{goal.title}</span>
+                    <ProgressBar percent={percent} color={goal.color} />
+                    <p className="text-[10px] text-[#C0BFB8] mt-1">{doneDays}일 / {totalDays}일</p>
                   </div>
-                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                    {streak > 0 && (
-                      <span className="text-xs text-[#878680]">🔥 {streak}일</span>
-                    )}
-                    <span className="text-xs font-semibold" style={{ color: goal.color }}>{percent}%</span>
-                  </div>
-                </div>
-                <ProgressBar percent={percent} color={goal.color} />
-                <p className="text-[10px] text-[#C0BFB8] mt-1">{doneDays}일 / {totalDays}일</p>
+                ))}
               </div>
-            ))}
-          </div>
+            )
+          )}
+
+          {(activeTab === "completed" || activeTab === "archived") && (
+            archivedGoalStats.length === 0 ? (
+              <p className="text-sm text-[#878680] text-center py-4">
+                {activeTab === "completed" ? "완료된 목표가 없어요" : "보관된 목표가 없어요"}
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {archivedGoalStats.map(({ goal, doneDays, totalDays, percent }) => (
+                  <div key={goal.id}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>
+                          <CategoryIcon category={goal.category} size={14} color={goal.color} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm text-[#2C2C2A] truncate">{goal.title}</p>
+                          <p className="text-[10px] text-[#C0BFB8]">
+                            {format(parseISO(goal.start_date), "yy.MM.dd")} – {format(parseISO(goal.end_date), "yy.MM.dd")}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-semibold flex-shrink-0 ml-2" style={{ color: goal.color }}>{percent}%</span>
+                    </div>
+                    <ProgressBar percent={percent} color={goal.color} />
+                    <p className="text-[10px] text-[#C0BFB8] mt-1">{doneDays}일 / {totalDays}일 완료</p>
+                  </div>
+                ))}
+              </div>
+            )
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

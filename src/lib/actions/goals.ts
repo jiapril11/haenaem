@@ -124,7 +124,10 @@ export async function archiveGoal(goalId: string, isArchived: boolean) {
 
   await supabase
     .from("goals")
-    .update({ is_archived: isArchived })
+    .update({
+      is_archived: isArchived,
+      archive_reason: isArchived ? "manual" : null,
+    })
     .eq("id", goalId)
     .eq("user_id", user.id);
 
