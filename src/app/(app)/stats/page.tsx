@@ -199,15 +199,9 @@ export default async function StatsPage() {
             else if (!isFuture) bg = "#FFE8E3";
             return (
               <div key={dayStr} className="aspect-square rounded-lg flex items-center justify-center" style={{ backgroundColor: bg }}>
-                {isDone ? (
-                  <span className="text-[10px] font-medium text-white">{format(day, "d")}</span>
-                ) : !isFuture && !isToday ? (
-                  <svg width="8" height="2" viewBox="0 0 8 2" fill="none">
-                    <path d="M1 1h6" stroke="#D75A2F" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-                  </svg>
-                ) : (
-                  <span className="text-[10px] font-medium text-[#878680]">{format(day, "d")}</span>
-                )}
+                <span className={`text-[10px] font-medium ${isDone ? "text-white" : "text-[#878680]"}`}>
+                  {format(day, "d")}
+                </span>
               </div>
             );
           })}
