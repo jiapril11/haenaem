@@ -4,7 +4,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateGoal } from "@/lib/actions/goals";
 import type { Goal } from "@/types";
-import { subscribeToPush, isPushSupported } from "@/lib/push";
+import { subscribeToPush } from "@/lib/push";
+import { useNotificationAvailable } from "@/hooks/useNotificationAvailable";
 
 const COLORS = [
   "#7E77B7",
@@ -27,14 +28,11 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
   const [endDate, setEndDate] = useState(goal.end_date);
   const [notificationEnabled, setNotificationEnabled] = useState(!!goal.notification_time);
   const [notificationTime, setNotificationTime] = useState(goal.notification_time ?? "09:00");
+  const notificationAvailable = useNotificationAvailable();
 
   async function handleNotificationToggle() {
     if (notificationEnabled) {
       setNotificationEnabled(false);
-      return;
-    }
-    if (!isPushSupported()) {
-      alert("이 브라우저는 푸시 알림을 지원하지 않아요.");
       return;
     }
     const success = await subscribeToPush();
@@ -147,31 +145,36 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
 
         {/* 알림 설정 */}
         <div className="flex flex-col gap-1.5">
-          <button
-            type="button"
-            onClick={handleNotificationToggle}
-            className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5"
-          >
-            <div>
-              <p className="text-sm font-medium text-[#2C2C2A] text-left">매일 알림 받기</p>
-              <p className="text-xs text-[#878680] text-left mt-0.5">설정한 시간에 목표 달성을 독려해드려요</p>
-            </div>
-            <div className={`w-11 h-6 rounded-full transition-colors flex items-center px-0.5 flex-shrink-0 ${notificationEnabled ? "bg-[#6CBFA8]" : "bg-[#E8E8E6]"}`}>
-              <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${notificationEnabled ? "translate-x-5" : "translate-x-0"}`} />
-            </div>
-          </button>
-          {notificationEnabled && (
-            <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-4 py-3">
-              <p className="text-sm text-[#878680] flex-shrink-0">알림 시간</p>
-              <input
-                type="time"
-                value={notificationTime}
-                onChange={(e) => setNotificationTime(e.target.value)}
-                className="flex-1 text-sm text-[#2C2C2A] outline-none bg-transparent"
-              />
-            </div>
-          )}
-        </div>
+            <button
+              type="button"
+              onClick={notificationAvailable === "available" ? handleNotificationToggle : undefined}
+              disabled={notificationAvailable !== "available"}
+              className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5 disabled:opacity-50"
+            >
+              <div>
+                <p className="text-sm font-medium text-[#2C2C2A] text-left">매일 알림 받기</p>
+                <p className="text-xs text-[#878680] text-left mt-0.5">
+                  {notificationAvailable !== "available"
+                    ? "홈 화면에 추가한 앱에서만 알림을 설정할 수 있어요"
+                    : "설정한 시간에 목표 달성을 독려해드려요"}
+                </p>
+              </div>
+              <div className={`w-11 h-6 rounded-full transition-colors flex items-center px-0.5 flex-shrink-0 ${notificationEnabled ? "bg-[#6CBFA8]" : "bg-[#E8E8E6]"}`}>
+                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${notificationEnabled ? "translate-x-5" : "translate-x-0"}`} />
+              </div>
+            </button>
+            {notificationEnabled && (
+              <div className="flex items-center gap-3 bg-white border border-[#E8E8E6] rounded-xl px-4 py-3">
+                <p className="text-sm text-[#878680] flex-shrink-0">알림 시간</p>
+                <input
+                  type="time"
+                  value={notificationTime}
+                  onChange={(e) => setNotificationTime(e.target.value)}
+                  className="flex-1 text-sm text-[#2C2C2A] outline-none bg-transparent"
+                />
+              </div>
+            )}
+          </div>
 
         {/* 저장 버튼 */}
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4">
