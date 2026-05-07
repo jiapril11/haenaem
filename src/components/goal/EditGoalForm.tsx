@@ -62,7 +62,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
       <div className="flex items-center gap-3 px-4 pt-6 pb-4">
         <button
           onClick={() => router.back()}
-          className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#E8E8E6]"
+          className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#E8E8E6] cursor-pointer"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M12 5l-5 5 5 5" stroke="#2C2C2A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -98,7 +98,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
                 key={c}
                 type="button"
                 onClick={() => setColor(c)}
-                className="w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center"
+                className="w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center cursor-pointer"
                 style={{
                   backgroundColor: c,
                   borderColor: color === c ? c : "transparent",
@@ -149,7 +149,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
               type="button"
               onClick={notificationAvailable === "available" ? handleNotificationToggle : undefined}
               disabled={notificationAvailable !== "available"}
-              className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5 disabled:opacity-50"
+              className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5 disabled:opacity-50 cursor-pointer"
             >
               <div>
                 <p className="text-sm font-medium text-[#2C2C2A] text-left">매일 알림 받기</p>
@@ -181,7 +181,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
           <button
             type="submit"
             disabled={!isValid || isPending}
-            className="w-full py-4 rounded-2xl text-white font-semibold text-base transition-all disabled:opacity-40"
+            className="w-full py-4 rounded-2xl text-white font-semibold text-base transition-all disabled:opacity-40 cursor-pointer"
             style={{ backgroundColor: color }}
           >
             {isPending ? "저장 중..." : "저장하기"}

@@ -50,14 +50,14 @@ export default function NicknameForm({ initialNickname }: { initialNickname: str
         <div className="flex gap-3 mt-2">
           <button
             onClick={handleCancel}
-            className="text-xs text-[#878680]"
+            className="text-xs text-[#878680] cursor-pointer"
           >
             취소
           </button>
           <button
             onClick={handleSave}
             disabled={isPending || value.trim().length < 2}
-            className="text-xs text-[#6CBFA8] font-semibold disabled:opacity-40"
+            className="text-xs text-[#6CBFA8] font-semibold disabled:opacity-40 cursor-pointer"
           >
             {isPending ? "저장 중..." : "저장"}
           </button>
@@ -71,7 +71,7 @@ export default function NicknameForm({ initialNickname }: { initialNickname: str
       <p className="font-semibold text-[#2C2C2A] truncate">{saved}</p>
       <button
         onClick={() => setIsEditing(true)}
-        className="text-xs text-[#6CBFA8] font-semibold flex-shrink-0 ml-3"
+        className="text-xs text-[#6CBFA8] font-semibold flex-shrink-0 ml-3 cursor-pointer"
       >
         수정
       </button>

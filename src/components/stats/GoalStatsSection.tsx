@@ -37,7 +37,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex-1 text-sm font-medium py-1.5 rounded-lg transition-colors ${
+            className={`flex-1 text-sm font-medium py-1.5 rounded-lg transition-colors cursor-pointer ${
               tab === t.key ? "bg-white text-[#2C2C2A] shadow-sm" : "text-[#878680]"
             }`}
           >
@@ -53,7 +53,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
           ) : (
             <div className="space-y-4">
               {activeGoalStats.map(({ goal, doneDays, totalDays, percent, streak }) => (
-                <Link key={goal.id} href={`/goals/${goal.id}`} className="block">
+                <Link key={goal.id} href={`/goals/${goal.id}`} className="block cursor-pointer">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
                       <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>
@@ -83,7 +83,7 @@ export default function GoalStatsSection({ activeGoalStats, completedGoalStats, 
           ) : (
             <div className="space-y-4">
               {stats.map(({ goal, doneDays, totalDays, percent }) => (
-                <Link key={goal.id} href={`/goals/${goal.id}`} className="block">
+                <Link key={goal.id} href={`/goals/${goal.id}`} className="block cursor-pointer">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
                       <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${goal.color}20` }}>

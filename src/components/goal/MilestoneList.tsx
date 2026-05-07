@@ -91,13 +91,13 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                     </svg>
                   </div>
                   <div className="flex gap-2 justify-end">
-                    <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
+                    <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5 cursor-pointer">
                       취소
                     </button>
                     <button
                       onClick={() => handleUpdate(m)}
                       disabled={!editTitle.trim() || isPending}
-                      className="text-xs font-medium px-3 py-1.5 rounded-lg text-white disabled:opacity-40"
+                      className="text-xs font-medium px-3 py-1.5 rounded-lg text-white disabled:opacity-40 cursor-pointer"
                       style={{ backgroundColor: color }}
                     >
                       저장
@@ -109,7 +109,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                   <button
                     onClick={() => startTransition(() => toggleMilestone(m.id, goalId, m.is_done))}
                     disabled={isPending}
-                    className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all"
+                    className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all cursor-pointer"
                     style={{
                       borderColor: m.is_done ? color : "#C0BFB8",
                       backgroundColor: m.is_done ? color : "transparent",
@@ -134,13 +134,13 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
                   </div>
 
                   <div className="flex items-center gap-1 flex-shrink-0">
-                    <button onClick={() => startEdit(m)} className="p-1.5 text-[#C0BFB8] hover:text-[#878680] transition-colors">
+                    <button onClick={() => startEdit(m)} className="p-1.5 text-[#C0BFB8] hover:text-[#878680] transition-colors cursor-pointer">
                       <PencilIcon />
                     </button>
                     <button
                       onClick={() => startTransition(() => deleteMilestone(m.id, goalId))}
                       disabled={isPending}
-                      className="p-1.5 text-[#C0BFB8] hover:text-red-400 transition-colors"
+                      className="p-1.5 text-[#C0BFB8] hover:text-red-400 transition-colors cursor-pointer"
                     >
                       <TrashIcon />
                     </button>
@@ -176,14 +176,14 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
           <div className="flex gap-2 justify-end">
             <button
               onClick={() => { setIsAdding(false); setNewTitle(""); setNewDate(""); }}
-              className="text-xs text-[#878680] px-3 py-1.5"
+              className="text-xs text-[#878680] px-3 py-1.5 cursor-pointer"
             >
               취소
             </button>
             <button
               onClick={handleCreate}
               disabled={!newTitle.trim() || isPending}
-              className="text-xs font-medium px-3 py-1.5 rounded-lg text-white disabled:opacity-40"
+              className="text-xs font-medium px-3 py-1.5 rounded-lg text-white disabled:opacity-40 cursor-pointer"
               style={{ backgroundColor: color }}
             >
               추가
@@ -193,7 +193,7 @@ export default function MilestoneList({ milestones, goalId, color }: Props) {
       ) : (
         <button
           onClick={() => setIsAdding(true)}
-          className={`w-full px-4 py-3 text-sm text-[#878680] flex items-center gap-2 hover:bg-[#F8F8F9] transition-colors rounded-b-2xl ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}
+          className={`w-full px-4 py-3 text-sm text-[#878680] flex items-center gap-2 hover:bg-[#F8F8F9] transition-colors rounded-b-2xl cursor-pointer ${milestones.length > 0 ? "border-t border-[#F0F0EE]" : ""}`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

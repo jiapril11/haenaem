@@ -51,7 +51,7 @@ export default async function SettingsPage() {
         </div>
         <a
           href="mailto:tadadadacoding@gmail.com?subject=해냄! 문의"
-          className="flex items-center justify-between px-4 py-3.5"
+          className="flex items-center justify-between px-4 py-3.5 cursor-pointer"
         >
           <span className="text-sm text-[#2C2C2A]">문의하기</span>
           <span className="text-sm text-[#878680]">→</span>

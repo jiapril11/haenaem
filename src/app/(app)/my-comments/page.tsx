@@ -23,7 +23,7 @@ export default async function MyCommentsPage() {
     <div className="px-4 pt-6 pb-6">
       {/* 헤더 */}
       <div className="flex items-center gap-3 mb-6">
-        <Link href="/community" className="w-9 h-9 rounded-xl bg-white border border-[#E8E8E6] flex items-center justify-center flex-shrink-0">
+        <Link href="/community" className="w-9 h-9 rounded-xl bg-white border border-[#E8E8E6] flex items-center justify-center flex-shrink-0 cursor-pointer">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#878680" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 5l-7 7 7 7"/>
           </svg>

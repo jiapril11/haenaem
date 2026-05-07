@@ -58,7 +58,7 @@ export default async function GoalDetailPage({
           {!isExpired && (
             <Link
               href={`/goals/${id}/edit`}
-              className="mb-4 text-sm font-medium px-3 py-1.5 rounded-xl bg-white border border-[#E8E8E6] text-[#878680]"
+              className="mb-4 text-sm font-medium px-3 py-1.5 rounded-xl bg-white border border-[#E8E8E6] text-[#878680] cursor-pointer"
             >
               수정
             </Link>

@@ -50,14 +50,14 @@ export default function TodayToggleButton({ goalId, isDoneToday, color, todayNot
           <div className="flex gap-2">
             <button
               onClick={() => { setEditNote(todayNote ?? ""); setIsEditing(false); }}
-              className="flex-1 py-1.5 rounded-lg text-xs font-medium text-[#878680] border border-[#E8E8E6]"
+              className="flex-1 py-1.5 rounded-lg text-xs font-medium text-[#878680] border border-[#E8E8E6] cursor-pointer"
             >
               취소
             </button>
             <button
               onClick={handleSaveNote}
               disabled={isPending}
-              className="flex-1 py-1.5 rounded-lg text-xs font-medium text-white disabled:opacity-60"
+              className="flex-1 py-1.5 rounded-lg text-xs font-medium text-white disabled:opacity-60 cursor-pointer"
               style={{ backgroundColor: color }}
             >
               {isPending ? "저장 중..." : "저장"}
@@ -75,7 +75,7 @@ export default function TodayToggleButton({ goalId, isDoneToday, color, todayNot
           />
           <button
             onClick={() => setIsEditing(true)}
-            className="absolute right-2.5 top-0 bottom-0 flex items-center p-1 text-[#C0BFB8] hover:text-[#878680] transition-colors"
+            className="absolute right-2.5 top-0 bottom-0 flex items-center p-1 text-[#C0BFB8] hover:text-[#878680] transition-colors cursor-pointer"
             aria-label="메모 편집"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -89,7 +89,7 @@ export default function TodayToggleButton({ goalId, isDoneToday, color, todayNot
       <button
         onClick={handleCheck}
         disabled={isPending || isEditing}
-        className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-60 ${
+        className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-60 cursor-pointer ${
           isDoneToday
             ? "bg-[#1D9E7518] text-[#1D9E75] border border-[#1D9E7540]"
             : "text-white"

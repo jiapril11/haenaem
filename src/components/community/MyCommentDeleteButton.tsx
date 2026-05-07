@@ -19,7 +19,7 @@ export default function MyCommentDeleteButton({ commentId }: { commentId: string
     <button
       onClick={handleDelete}
       disabled={isPending}
-      className="text-xs text-[#C0BFB8] hover:text-[#D75A2F] transition-colors disabled:opacity-40"
+      className="text-xs text-[#C0BFB8] hover:text-[#D75A2F] transition-colors disabled:opacity-40 cursor-pointer"
     >
       삭제
     </button>

@@ -72,7 +72,7 @@ export default function MonthlyCalendar({
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={prevMonth}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-[#878680] active:bg-[#F8F8F9]"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-[#878680] active:bg-[#F8F8F9] cursor-pointer"
         >
           ‹
         </button>
@@ -86,7 +86,7 @@ export default function MonthlyCalendar({
         </div>
         <button
           onClick={nextMonth}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-[#878680] active:bg-[#F8F8F9]"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-[#878680] active:bg-[#F8F8F9] cursor-pointer"
         >
           ›
         </button>

@@ -68,7 +68,7 @@ export default function OnboardingView({ name }: { name: string }) {
       {/* CTA */}
       <Link
         href="/goals/new"
-        className="w-full bg-[#6CBFA8] text-white py-4 rounded-2xl text-base font-bold text-center block"
+        className="w-full bg-[#6CBFA8] text-white py-4 rounded-2xl text-base font-bold text-center block cursor-pointer"
       >
         첫 목표 만들기
       </Link>

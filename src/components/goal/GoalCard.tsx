@@ -28,7 +28,7 @@ export default function GoalCard({ goal, completedDates, streak, todayNote }: Go
     <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E8E8E6]">
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-4">
-        <Link href={`/goals/${goal.id}`} className="flex items-center gap-3 flex-1 min-w-0">
+        <Link href={`/goals/${goal.id}`} className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
             style={{ backgroundColor: `${goal.color}20` }}

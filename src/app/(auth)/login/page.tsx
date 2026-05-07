@@ -37,7 +37,7 @@ function LoginContent() {
         {/* Google 로그인 버튼 */}
         <button
           onClick={handleGoogleLogin}
-          className="w-full bg-white border border-[#E8E8E6] text-[#2C2C2A] rounded-2xl py-4 font-semibold text-base flex items-center justify-center gap-3 shadow-sm active:scale-[0.98] transition-transform"
+          className="w-full bg-white border border-[#E8E8E6] text-[#2C2C2A] rounded-2xl py-4 font-semibold text-base flex items-center justify-center gap-3 shadow-sm active:scale-[0.98] transition-transform cursor-pointer"
         >
           <svg width="20" height="20" viewBox="0 0 20 20">
             <path d="M19.6 10.23c0-.68-.06-1.36-.18-2H10v3.79h5.4a4.6 4.6 0 01-2 3.02v2.5h3.24c1.9-1.75 2.96-4.33 2.96-7.31z" fill="#4285F4" />

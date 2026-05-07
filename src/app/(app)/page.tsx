@@ -78,7 +78,7 @@ export default async function HomePage() {
         </div>
         <Link
           href="/goals/new"
-          className="w-10 h-10 bg-[#6CBFA8] rounded-xl flex items-center justify-center text-white text-2xl font-light flex-shrink-0 mt-1"
+          className="w-10 h-10 bg-[#6CBFA8] rounded-xl flex items-center justify-center text-white text-2xl font-light flex-shrink-0 mt-1 cursor-pointer"
         >
           +
         </Link>

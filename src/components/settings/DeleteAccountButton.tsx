@@ -15,7 +15,7 @@ export default function DeleteAccountButton() {
     <>
       <button
         onClick={() => setShowConfirm(true)}
-        className="w-full py-3.5 rounded-xl text-[#878680] text-sm"
+        className="w-full py-3.5 rounded-xl text-[#878680] text-sm cursor-pointer"
       >
         회원 탈퇴
       </button>
@@ -31,14 +31,14 @@ export default function DeleteAccountButton() {
               <button
                 onClick={() => setShowConfirm(false)}
                 disabled={isPending}
-                className="flex-1 py-3 rounded-xl bg-[#F0F0EE] text-sm font-medium text-[#2C2C2A]"
+                className="flex-1 py-3 rounded-xl bg-[#F0F0EE] text-sm font-medium text-[#2C2C2A] cursor-pointer"
               >
                 취소
               </button>
               <button
                 onClick={handleConfirm}
                 disabled={isPending}
-                className="flex-1 py-3 rounded-xl bg-[#D75A2F] text-sm font-medium text-white disabled:opacity-50"
+                className="flex-1 py-3 rounded-xl bg-[#D75A2F] text-sm font-medium text-white disabled:opacity-50 cursor-pointer"
               >
                 {isPending ? "탈퇴 중..." : "탈퇴하기"}
               </button>

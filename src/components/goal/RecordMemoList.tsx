@@ -67,13 +67,13 @@ export default function RecordMemoList({ records, goalId, color }: Props) {
                   autoFocus
                 />
                 <div className="flex gap-2 justify-end">
-                  <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5">
+                  <button onClick={() => setEditingId(null)} className="text-xs text-[#878680] px-3 py-1.5 cursor-pointer">
                     취소
                   </button>
                   <button
                     onClick={() => handleUpdate(r)}
                     disabled={isPending}
-                    className="text-xs font-medium px-3 py-1.5 rounded-lg text-white"
+                    className="text-xs font-medium px-3 py-1.5 rounded-lg text-white cursor-pointer"
                     style={{ backgroundColor: color }}
                   >
                     저장
@@ -84,13 +84,13 @@ export default function RecordMemoList({ records, goalId, color }: Props) {
               <div className="flex items-start gap-2">
                 <p className="text-sm text-[#2C2C2A] leading-relaxed flex-1">{r.note}</p>
                 <div className="flex items-center gap-1 flex-shrink-0">
-                  <button onClick={() => startEdit(r)} className="p-1.5 text-[#C0BFB8] hover:text-[#878680] transition-colors">
+                  <button onClick={() => startEdit(r)} className="p-1.5 text-[#C0BFB8] hover:text-[#878680] transition-colors cursor-pointer">
                     <PencilIcon />
                   </button>
                   <button
                     onClick={() => startTransition(() => deleteRecordNote(r.id, goalId))}
                     disabled={isPending}
-                    className="p-1.5 text-[#C0BFB8] hover:text-red-400 transition-colors"
+                    className="p-1.5 text-[#C0BFB8] hover:text-red-400 transition-colors cursor-pointer"
                   >
                     <TrashIcon />
                   </button>

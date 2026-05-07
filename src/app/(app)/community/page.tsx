@@ -95,7 +95,7 @@ export default async function CommunityPage() {
       <div className="flex items-center justify-between mb-5">
         <h1 className="text-xl font-bold text-[#2C2C2A]">커뮤니티</h1>
         <div className="flex items-center gap-3">
-          <Link href="/my-comments" className="text-xs text-[#6CBFA8] font-semibold">
+          <Link href="/my-comments" className="text-xs text-[#6CBFA8] font-semibold cursor-pointer">
             내 댓글
           </Link>
           <span className="text-xs text-[#878680]">공개 목표 {goals.length}개</span>
@@ -106,7 +106,7 @@ export default async function CommunityPage() {
         <div className="bg-[#6CBFA810] border border-[#6CBFA830] rounded-2xl px-4 py-3.5 mb-5">
           <p className="text-sm font-semibold text-[#6CBFA8] mb-0.5">목표를 공개해보세요</p>
           <p className="text-xs text-[#878680] mb-3">다른 사람들과 함께 목표를 이뤄가요</p>
-          <Link href="/goals/new" className="inline-block bg-[#6CBFA8] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
+          <Link href="/goals/new" className="inline-block bg-[#6CBFA8] text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer">
             목표 추가하기
           </Link>
         </div>

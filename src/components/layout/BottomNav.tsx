@@ -127,7 +127,7 @@ export default function BottomNav() {
             <Link
               key={tab.href}
               href={tab.href}
-              className="flex-1 flex flex-col items-center gap-1 pt-3 pb-5"
+              className="flex-1 flex flex-col items-center gap-1 pt-3 pb-5 cursor-pointer"
             >
               {tab.icon(active)}
               <span

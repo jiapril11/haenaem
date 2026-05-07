@@ -44,7 +44,7 @@ export default function GoalActions({ goalId, isArchived, archiveReason, isPubli
         type="button"
         onClick={handleTogglePublic}
         disabled={isPending}
-        className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5 disabled:opacity-60"
+        className="w-full flex items-center justify-between bg-white border border-[#E8E8E6] rounded-xl px-4 py-3.5 disabled:opacity-60 cursor-pointer"
       >
         <div>
           <p className="text-sm font-medium text-[#2C2C2A] text-left">커뮤니티에 공개</p>
@@ -61,7 +61,7 @@ export default function GoalActions({ goalId, isArchived, archiveReason, isPubli
           <button
             onClick={handleArchive}
             disabled={isPending}
-            className="flex-1 py-3 rounded-xl border border-[#E8E8E6] bg-white text-sm font-medium text-[#878680] disabled:opacity-50"
+            className="flex-1 py-3 rounded-xl border border-[#E8E8E6] bg-white text-sm font-medium text-[#878680] disabled:opacity-50 cursor-pointer"
           >
             {isArchived ? "복원하기" : "보관하기"}
           </button>
@@ -71,7 +71,7 @@ export default function GoalActions({ goalId, isArchived, archiveReason, isPubli
         <button
           onClick={() => setShowDeleteConfirm(true)}
           disabled={isPending}
-          className="flex-1 py-3 rounded-xl border border-[#D75A2F30] bg-[#D75A2F08] text-sm font-medium text-[#D75A2F] disabled:opacity-50"
+          className="flex-1 py-3 rounded-xl border border-[#D75A2F30] bg-[#D75A2F08] text-sm font-medium text-[#D75A2F] disabled:opacity-50 cursor-pointer"
         >
           삭제하기
         </button>
@@ -88,14 +88,14 @@ export default function GoalActions({ goalId, isArchived, archiveReason, isPubli
             <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 py-3 rounded-xl border border-[#E8E8E6] text-sm font-semibold text-[#878680]"
+                className="flex-1 py-3 rounded-xl border border-[#E8E8E6] text-sm font-semibold text-[#878680] cursor-pointer"
               >
                 취소
               </button>
               <button
                 onClick={handleDelete}
                 disabled={isPending}
-                className="flex-1 py-3 rounded-xl bg-[#D75A2F] text-white text-sm font-semibold disabled:opacity-50"
+                className="flex-1 py-3 rounded-xl bg-[#D75A2F] text-white text-sm font-semibold disabled:opacity-50 cursor-pointer"
               >
                 {isPending ? "삭제 중..." : "삭제"}
               </button>
