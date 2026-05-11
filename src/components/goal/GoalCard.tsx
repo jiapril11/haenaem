@@ -14,7 +14,7 @@ interface GoalCardProps {
 }
 
 export default function GoalCard({ goal, completedDates, streak, todayNote }: GoalCardProps) {
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = format(new Date(Date.now() + 9 * 60 * 60 * 1000), "yyyy-MM-dd");
   const isDoneToday = completedDates.includes(today);
 
   const totalDays = differenceInDays(parseISO(goal.end_date), parseISO(goal.start_date)) + 1;

@@ -43,7 +43,7 @@ export default async function HomePage() {
     supabase.from("profiles").select("nickname").eq("id", user.id).single(),
   ]);
 
-  const activeGoals: Goal[] = goals ?? [];
+  const activeGoals: Goal[] = (goals ?? []).filter((g) => g.end_date >= today);
   const today = getTodayKST();
   const todayFmt = formatKST("M월 d일 (EEE)", { locale: ko });
   const hour = getNowKST().getHours();

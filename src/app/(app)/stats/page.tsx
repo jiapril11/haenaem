@@ -46,15 +46,18 @@ export default async function StatsPage() {
   const allGoals = goals ?? [];
   const allRecords = records ?? [];
 
-  const activeGoals = allGoals.filter((g) => !g.is_archived);
-  const completedGoals = allGoals.filter((g) => g.is_archived && g.archive_reason === "expired");
+  const today = getTodayKST();
+  const activeGoals = allGoals.filter((g) => !g.is_archived && g.end_date >= today);
+  const completedGoals = allGoals.filter((g) =>
+    (g.is_archived && g.archive_reason === "expired") ||
+    (!g.is_archived && g.end_date < today)
+  );
   const manualArchivedGoals = allGoals.filter((g) => g.is_archived && g.archive_reason === "manual");
 
   const allDates = [...new Set(allRecords.map((r) => r.date))];
   const { current: currentStreak, longest: longestStreak } = calcStreak(allDates);
 
   const now = getNowKST();
-  const today = getTodayKST();
   const monthStr = format(now, "yyyy-MM");
   const thisMonthDates = new Set(allDates.filter((d) => d.startsWith(monthStr)));
 
