@@ -14,8 +14,9 @@ interface GoalCardProps {
 }
 
 export default function GoalCard({ goal, completedDates, streak, todayNote }: GoalCardProps) {
-  const today = format(new Date(Date.now() + 9 * 60 * 60 * 1000), "yyyy-MM-dd");
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" });
   const isDoneToday = completedDates.includes(today);
+  const isNotStarted = goal.start_date > today;
 
   const totalDays = differenceInDays(parseISO(goal.end_date), parseISO(goal.start_date)) + 1;
   const doneDays = completedDates.length;
@@ -74,12 +75,21 @@ export default function GoalCard({ goal, completedDates, streak, todayNote }: Go
       </div>
 
       {/* 오늘 체크 버튼 */}
-      <TodayToggleButton
-        goalId={goal.id}
-        isDoneToday={isDoneToday}
-        color={goal.color}
-        todayNote={todayNote}
-      />
+      {isNotStarted ? (
+        <button
+          disabled
+          className="w-full py-2.5 rounded-xl text-sm font-semibold bg-[#F0F0EE] text-[#C0BFB8] disabled:opacity-100"
+        >
+          {startFmt} 시작 예정
+        </button>
+      ) : (
+        <TodayToggleButton
+          goalId={goal.id}
+          isDoneToday={isDoneToday}
+          color={goal.color}
+          todayNote={todayNote}
+        />
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { updateGoal } from "@/lib/actions/goals";
 import type { Goal } from "@/types";
 import { subscribeToPush } from "@/lib/push";
@@ -21,6 +22,8 @@ const COLORS = [
 export default function EditGoalForm({ goal }: { goal: Goal }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" });
 
   const [title, setTitle] = useState(goal.title);
   const [color, setColor] = useState(goal.color);
@@ -135,7 +138,7 @@ export default function EditGoalForm({ goal }: { goal: Goal }) {
               <input
                 type="date"
                 value={endDate}
-                min={startDate}
+                min={startDate > today ? startDate : today}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="w-full bg-white border border-[#E8E8E6] rounded-xl px-3 py-2.5 text-sm text-[#2C2C2A] outline-none focus:border-[#6CBFA8]"
               />

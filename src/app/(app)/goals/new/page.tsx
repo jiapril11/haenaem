@@ -30,7 +30,7 @@ interface MilestoneInput {
 export default function NewGoalPage() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" });
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<Category | null>(null);
@@ -191,7 +191,7 @@ export default function NewGoalPage() {
               <input
                 type="date"
                 value={endDate}
-                min={startDate}
+                min={startDate > today ? startDate : today}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="flex-1 min-w-0 text-sm text-[#2C2C2A] outline-none bg-transparent"
               />
